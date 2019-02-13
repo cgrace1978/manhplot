@@ -14,7 +14,7 @@ require(gridExtra)
 ## chr, pos, Pvalue, allele frequency, VEP annotation
 ## VEP annotation coded as 1 if present at variant, 0 is not present
 ## allele frequency is reported if <- MAF variable below.
-infile<-"cad.add.160614_manhformatv2.txt" ## ukbb.full.txt cad.add.160614_manhformatv2.txt
+infile<-"cad.add.160614_manhformatv3.txt" ## ukbb.full.txt cad.add.160614_manhformatv2.txt
 
 ## name of the PDF to generate - currently using a date stamp - modify if necessary.
 outfile<-paste("manh-",format(Sys.time(), "%d-%m-%y.%H-%M-%S"),sep="")
