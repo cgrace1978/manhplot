@@ -6,6 +6,21 @@ MANHATTAN++ is software to generate a transposed manhattan heatmap, implemented 
 
 you need to install [R v3.4.3](https://www.r-project.org/) and the packages **ggplot2**, **reshape2**, **ggrepel** and **gridExtra** and associated dependencies. The R script can be run on Windows and Linux, you must specify paths to the filenames you are using (or use the default filenames)
 
+To install the software you need to download this GIT repository, this can be done on the command line using the command:
+```
+git clone https://github.com/cgrace1978/manhplot
+```
+To update the local version of the repository use the following command:
+```
+git pull
+```
+Alternatively it is possible to download the repository as a zip using the clone / download on the GIT UI.
+
+Once the repository is downloaded, install the required packages in R and set the file paths to your input files, and the script should just work with the command:
+```
+Rscript manhattan.heatmap.v1.R
+```
+**Note:** If you are using the default GWAS file (cad.add.160614_manhformatv3.txt.gz) it must be unzipped prior to running the R script.
 ## Input Files
 
 In order to generate the plot, three files are required (with headers in the format described)
