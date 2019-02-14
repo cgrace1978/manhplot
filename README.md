@@ -12,6 +12,7 @@ git clone https://github.com/cgrace1978/manhplot
 ```
 To update the local version of the repository use the following command:
 ```
+cd manhplot
 git pull
 ```
 Alternatively it is possible to download the repository as a zip using the clone / download on the GIT UI.
