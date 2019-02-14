@@ -10,13 +10,13 @@ you need to install [R v3.4.3](https://www.r-project.org/) and the packages **gg
 
 In order to generate the plot, three files are required (with headers in the format described)
 
-### GWAS summary statistics
+### Genome Wide Association Study (GWAS) or Meta-analysis summary statistics
 
 The summary statistics, this file should have the following columns:
 
 1. **chr** - chromosome (must be numeric)
 2. **pos** - position
-3. **pvalue** - p-value
+3. **pvalue** - p-value (please **do not** log-transform)
 4. **maf** - Minor Allele Frequency
 5. **conseq** - Flag of whether variant has HIGH functional consequence (using VEP)
 
