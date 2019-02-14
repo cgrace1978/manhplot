@@ -1,0 +1,5 @@
+This summary statistics file has some "made up" entries which will cause some more "bubbles" to appear on the plot.
+a. Singleton variant with high consequence (Chr 1)
+b. Singleton variant with high consequence & low MAF (Chr 3)
+c. 2-200 bin with high consequence (Chr 2)
+d. 2-200 bin with low maf & high consequence  (Chr 1)
