@@ -1,4 +1,4 @@
-# MANHATTAN++ v1.0
+# MANHATTAN++
 
 MANHATTAN++ is software to generate a transposed manhattan heatmap, implemented in R.
 
