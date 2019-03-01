@@ -5,9 +5,6 @@ library(ggplot2)
 library(ggrepel)
 require(gridExtra)
 
-## TODO - DYNAMIC HEADERS FOR LOCI INFORMATION FILE.
-## TODO - LENGTH OF SNP NAME
-
 ## files by default are located in respect to the working directory for this project
 ## use getwd and setwd to change this.
 ## input gwas file needs to be numerically sorted with columns:
@@ -50,7 +47,7 @@ MAF<-0.05 ## The MAF threshold for use with the config MAF flag.
 
 #### THERE IS NO NEED TO READ THE SCRIPT BEYOND THIS POINT
 
-rebuild<-T ## set to false to retain the current matrix
+rebuild<-F ## set to false to retain the current matrix
 debugflag<-F ## Turn logging on / off
 
 ### Assert statement
@@ -157,7 +154,6 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
     
     mdat<-matrix(0, nrow = length(pvals), ncol = length(chunks)-1)
     
-    ## TODO need to check boundary cases positions.
     for (i in 1:(length(chunks)-1)){
       slice<-chr.slice[chr.slice$pos >= chunks[i] & chr.slice$pos < chunks[i+1],]
       
@@ -523,7 +519,7 @@ gt$layout$clip[gt$layout$name == "panel"] <- "off"
 
 ## hard code variables for positions of two plots on qplot
 manh.max<-7
-annot.min<-6.725
+annot.min<-6.7
 
 ## always draw as a PDF.
 
