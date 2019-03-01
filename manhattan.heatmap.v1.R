@@ -47,7 +47,7 @@ MAF<-0.05 ## The MAF threshold for use with the config MAF flag.
 
 #### THERE IS NO NEED TO READ THE SCRIPT BEYOND THIS POINT
 
-rebuild<-F ## set to false to retain the current matrix
+rebuild<-T ## set to false to retain the current matrix
 debugflag<-F ## Turn logging on / off
 
 ### Assert statement
