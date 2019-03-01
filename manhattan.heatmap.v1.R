@@ -363,7 +363,7 @@ if(max(m$val) > max(config$idx)){ ## if there are any cells which do not have a 
 
 pval.seq<-seq(from=pval.units,to=max.pval,by=pval.units)
 
-y.labels<-c(0,pval.seq)
+y.labels<-c("",pval.seq)
 y.breaks<-c(0.5,log10.index(pval.seq))
 
 if(showgenes==FALSE){ ## if show genes flag is not set then put all the genes in the table
