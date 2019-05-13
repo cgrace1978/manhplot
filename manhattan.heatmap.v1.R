@@ -5,9 +5,6 @@ library(ggplot2)
 library(ggrepel)
 require(gridExtra)
 
-## TODO - DYNAMIC HEADERS FOR LOCI INFORMATION FILE.
-## TODO - LENGTH OF SNP NAME
-
 ## files by default are located in respect to the working directory for this project
 ## use getwd and setwd to change this.
 ## input gwas file needs to be numerically sorted with columns:
@@ -79,6 +76,17 @@ p.val.index<-function(p.val){
   return(idx)
 }
 
+p.val.cell<-function(p.val,pval.chunks){
+  gws<--1*log10(p.val) ## convert the p-value to -log10
+  idx<-log10.cell(gws) ## call the log10.index function.
+  return(idx)
+}
+
+log10.cell<-function(log, pval.chunks){
+  idx<-pvals.cells.index$id[log >= pvals.cells.index$LP & log < pvals.cells.index$UP]
+  return (idx)
+}
+
 ### Find the exact cell which the position is within on the heatmap
 ## chr - chr for index
 ## position - position for index
@@ -111,6 +119,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
   
   pvals<-seq(from=0, to=max.pval, by=pval.split) # max(-log10(d$Pvalue))
+  pvals.cells.index<-data.frame(id=1:161,LP=pvals,UP=c(pvals[2:161],max.pval))
   
   final<-matrix(0, nrow = length(pvals), ncol = 0)
   
@@ -145,7 +154,6 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
     
     mdat<-matrix(0, nrow = length(pvals), ncol = length(chunks)-1)
     
-    ## TODO need to check boundary cases positions.
     for (i in 1:(length(chunks)-1)){
       slice<-chr.slice[chr.slice$pos >= chunks[i] & chr.slice$pos < chunks[i+1],]
       
@@ -355,7 +363,7 @@ if(max(m$val) > max(config$idx)){ ## if there are any cells which do not have a 
 
 pval.seq<-seq(from=pval.units,to=max.pval,by=pval.units)
 
-y.labels<-c(0,pval.seq)
+y.labels<-c("",pval.seq)
 y.breaks<-c(0.5,log10.index(pval.seq))
 
 if(showgenes==FALSE){ ## if show genes flag is not set then put all the genes in the table
@@ -370,8 +378,8 @@ main.core<-ggplot(data=m, aes(x=pos,y=pval)) +
   theme(legend.position="left",legend.key.size=unit(0.5,"line"),
         legend.title=element_text(size=5),
         legend.text=element_text(size=5)) +
-  geom_hline(yintercept=p.val.index(GWS), linetype="dashed") + ## GWS line
-  geom_hline(yintercept=p.val.index(FDR), linetype="dashed") + ## FDR line
+  geom_hline(yintercept=p.val.cell(GWS)+0.5, linetype="dashed") + ## GWS line
+  geom_hline(yintercept=p.val.cell(FDR)+0.5, linetype="dashed") + ## FDR line
   scale_fill_gradientn(colours = col.discrete, 
         guide="legend", breaks=col.brks, 
         labels=col.text,name = "Variant Count") + 
@@ -511,7 +519,7 @@ gt$layout$clip[gt$layout$name == "panel"] <- "off"
 
 ## hard code variables for positions of two plots on qplot
 manh.max<-7
-annot.min<-6.725
+annot.min<-6.7
 
 ## always draw as a PDF.
 
