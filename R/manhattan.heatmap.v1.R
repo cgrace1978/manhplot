@@ -23,10 +23,10 @@ manhplot<-function(infile, outfile, configfile, snpfile,
                    chrname="chr",posname="pos",pvalname="pvalue",
                    frqname="maf",conseqname="conseq"){
   
-requireNamespace("reshape2", quietly=F)
-requireNamespace("ggplot2", quietly=F)
-requireNamespace("ggrepel", quietly=F)
-requireNamespace("gridExtra", quietly=F)
+library(reshape2)
+library(ggplot2)
+library(ggrepel)
+library(gridExtra)
 
 ## FLAGS for internal use
 showgenes<-F ## show labels for known genes, rather than cells of interest
