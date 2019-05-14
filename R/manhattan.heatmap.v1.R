@@ -17,7 +17,18 @@
 #' @param conseqname column name for variant annotation consequence in GWAS infile
 #' @examples
 #' library(manhplot)
-#' manhplot(infile = infile,outfile = "X:\\cgrace\\test444", configfile = configfile, snpfile = snpfile)
+#' install.packages("R.utils")
+#' library(R.utils)
+#'
+#' gunzip(system.file("extdata","cad.add.160614_manhformatv3.txt.gz",package = "manhplot"))
+#'
+#' infile<-system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot")
+#' configfile<-system.file("extdata","config.txt", package = "manhplot")
+#' snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
+#'
+#' manhplot(infile = infile,outfile = "default-plot", configfile = configfile, snpfile = snpfile, drawastiff = T)
+#'
+#' gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
 #' 
 #' @export
 manhplot<-function(infile, outfile, configfile, snpfile, 
