@@ -15,6 +15,9 @@
 #' @param pvalname Column name for pvalue in GWAS infile
 #' @param frqname column name for allele frequency in GWAS infile
 #' @param conseqname column name for variant annotation consequence in GWAS infile
+#' @examples
+#' library(manhplot)
+#' manhplot(infile = infile,outfile = "X:\\cgrace\\test444", configfile = configfile, snpfile = snpfile)
 #' 
 #' @export
 manhplot<-function(infile, outfile, configfile, snpfile, 

@@ -39,3 +39,8 @@ manhplot(infile, outfile, configfile, snpfile, drawastiff = F,
 \description{
 Generate the manhattan++ plot
 }
+\examples{
+library(manhplot)
+manhplot(infile = infile,outfile = "X:\\\\cgrace\\\\test444", configfile = configfile, snpfile = snpfile)
+
+}
