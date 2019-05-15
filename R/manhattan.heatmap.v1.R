@@ -44,12 +44,6 @@ library(reshape2)
 library(ggplot2)
 library(ggrepel)
 library(gridExtra)
-
-## load the fonts
-library(extrafont)
-font_import(prompt = F, pattern = "arial") # - run this at the begining
-loadfonts(device="win", quiet = T)
-loadfonts(device="pdf", quiet = T)
   
 ## FLAGS for internal use
 showgenes<-F ## show labels for known genes, rather than cells of interest
@@ -500,19 +494,19 @@ title.pos1<-text.pos[1]
 table2<-table1+
   annotate("text", x = text.pos1,
            y = title.pos[1], label = as.character(snp.info.novel$markername),
-           angle=0,size=textsize, hjust=0, family = "Arial") + ## markername
+           angle=0,size=textsize, hjust=0) + ## markername
   annotate("text", x = text.pos1, 
            y = title.pos[2], label = as.character(format(round(snp.info.novel$eaf,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0, family = "Arial") + ## EAF
+           angle=0,size=textsize, hjust=0) + ## EAF
   annotate("text", x = text.pos1, 
            y = title.pos[3], label = as.character(format(round(snp.info.novel$OR,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0, family = "Arial") + ## OR
+           angle=0,size=textsize, hjust=0) + ## OR
   annotate("text", x = text.pos1, 
            y = title.pos[4], label = as.character(formatC(snp.info.novel$Pvalue, format = "E", digits = 2)),
-           angle=0,size=textsize, hjust=0, family = "Arial") + ## P-value
+           angle=0,size=textsize, hjust=0) + ## P-value
   annotate("text", x = text.pos1,
            y = title.pos[5], label =as.character(snp.info.novel$NearestGene),
-           angle=0,size=textsize, hjust=0,fontface = 'italic', family = "Arial") + ## Nearest Gene
+           angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
   annotate("segment", x = text.pos1,
            xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
            colour = "blue", linetype="dashed", size=0.5) +  ## segment from midpoint to table row
@@ -521,7 +515,7 @@ table2<-table1+
            colour = "blue", linetype="dashed", size=0.5) + ## segment from axis to mid point
   annotate("text", x = chr.matrix.len$mid,
            y = chr.num.pos, label = as.character(1:lastchr), 
-           angle=0,size=3.5, hjust=0, family = "Arial")+ ## chromosome labels
+           angle=0,size=3.5, hjust=0)+ ## chromosome labels
   annotate("segment", x = chr.matrix.len$cumm, 
            xend = chr.matrix.len$cumm, y = brks.pos, yend = segment.indexes[3], 
            colour = "black", linetype="solid") + ## x axis breaks
@@ -534,19 +528,19 @@ table2<-table1+
 final.table.plot<-table2 + 
   annotate("text", x = title.pos1,
            y = title.pos[1], label = "SNP",
-           angle=0,size=textsize, hjust=0,fontface = 'bold', family = "Arial") +
+           angle=0,size=textsize, hjust=0,fontface = 'bold') +
   annotate("text", x = title.pos1,
            y = title.pos[2], label = "EAF",
-           angle=0,size=textsize, hjust=0,fontface = 'bold', family = "Arial") +
+           angle=0,size=textsize, hjust=0,fontface = 'bold') +
   annotate("text", x = title.pos1,
            y = title.pos[3], label = "OR",
-           angle=0,size=textsize, hjust=0,fontface = 'bold', family = "Arial") +
+           angle=0,size=textsize, hjust=0,fontface = 'bold') +
   annotate("text", x = title.pos1,
            y = title.pos[4], label = "p-value",
-           angle=0,size=textsize, hjust=0,fontface = 'bold', family = "Arial") +
+           angle=0,size=textsize, hjust=0,fontface = 'bold') +
   annotate("text", x = title.pos1,
            y = title.pos[5], label = "Gene",
-           angle=0,size=textsize, hjust=0,fontface = 'bold', family = "Arial") 
+           angle=0,size=textsize, hjust=0,fontface = 'bold') 
 
 gt <- ggplot_gtable(ggplot_build(final.table.plot)) # p4
 gt$layout$clip[gt$layout$name == "panel"] <- "off"
@@ -560,7 +554,7 @@ annot.min<-6.7
 if(drawastiff==T){
   tiff(filename = paste(outfile,".tif",sep=""),width = 8.27,height = 11.69, units="in",res=300)
 } else{
-  cairo_pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
+  pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
 
 
