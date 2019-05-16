@@ -15,6 +15,8 @@
 #' @param pvalname Column name for pvalue in GWAS infile
 #' @param frqname column name for allele frequency in GWAS infile
 #' @param conseqname column name for variant annotation consequence in GWAS infile
+#' @param showgenes If T shows known genes as bubbles on main manhattan plot, if F show positions of interest as bubbles
+#' @param showrsids If showgenes is T, then show the rsids, rather than genes
 #' @examples
 #' library(manhplot)
 #' ## Load R.utils for gzip functionality
@@ -38,7 +40,9 @@ manhplot<-function(infile, outfile, configfile, snpfile,
                    drawastiff=F,
                    GWS=5E-8, FDR=1E-3, MAF=0.05,
                    chrname="chr",posname="pos",pvalname="pvalue",
-                   frqname="maf",conseqname="conseq"){
+                   frqname="maf",conseqname="conseq",
+                   showgenes=F,showrsids=F,
+                   pos.split=3E6,pval.split=0.125,max.pval=20){
   
 library(reshape2)
 library(ggplot2)
@@ -46,13 +50,10 @@ library(ggrepel)
 library(gridExtra)
   
 ## FLAGS for internal use
-showgenes<-F ## show labels for known genes, rather than cells of interest
-showrsids<-F ## show rsids on labels
+# showgenes<-F ## show labels for known genes, rather than cells of interest
+# showrsids<-F ## show rsids on labels
 
 ## parameters for drawing the manhattan heatmap for internal use.
-pos.split<-3E6 ## length of base pair regions for each cell - default 3E6
-pval.split<-0.125 ## length of lo10(pvalue) for each cell - default 0.125
-max.pval<-20 ## the max pval to show on the plot - default 20
 pval.units<-5 ## units to display on the y axis
 textsize<-2 ## size of text used on labels
 
@@ -147,7 +148,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
   
   pvals<-seq(from=0, to=max.pval, by=pval.split) # max(-log10(d$Pvalue))
-  pvals.cells.index<-data.frame(id=1:161,LP=pvals,UP=c(pvals[2:161],max.pval))
+  pvals.cells.index<-data.frame(id=1:length(pvals),LP=pvals,UP=c(pvals[2:length(pvals)],max.pval))
   
   final<-matrix(0, nrow = length(pvals), ncol = 0)
   
@@ -452,7 +453,13 @@ if(dim(pos.interest)[1]> 0){ ## if any positions of interest label on the manhat
         point.padding = NA,segment.color = "black",color="black")
 }
 
-title.pos<-c(log10.index(17)+1, log10.index(13)+1, log10.index(11.5)+1,log10.index(10)+1,log10.index(7)+1)
+## convert coordinates 0-20 to coordinates for whole table.
+table.pos<-function(index){
+  idx<-(index / 20) * max.pval
+  return(log10.index(idx))
+}
+
+title.pos<-c(table.pos(17)+1, table.pos(13)+1, table.pos(11.5)+1,table.pos(10)+1,table.pos(7)+1)
 
 ## Generate table for the novel genes
 ## Start with a completely blank plot (table1)
@@ -481,9 +488,9 @@ lim<-layer_scales(table1)
 xmin<-lim$x$range$range[2]*-1
 xmax<-lim$x$range$range[1]*-1
 
-segment.indexes<-c(log10.index(17.5)+1,log10.index(19)+1,log10.index(20)+1)
-chr.num.pos<-(log10.index(19.75)+1)
-brks.pos<-(log10.index(19.7)+1)
+segment.indexes<-c(table.pos(17.5)+1,table.pos(19)+1,table.pos(20)+1)
+chr.num.pos<-(table.pos(19.75)+1)
+brks.pos<-(table.pos(19.7)+1)
 
 text.pos<-seq(from=xmin, to=xmax,length.out=length(snp.info.novel$markername)+1)
 text.pos1<-text.pos[2:length(text.pos)]
@@ -556,9 +563,6 @@ if(drawastiff==T){
 } else{
   pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
-
-
-
 
 final.plot<-main.core
  

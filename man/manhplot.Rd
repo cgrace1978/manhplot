@@ -7,7 +7,8 @@
 manhplot(infile, outfile, configfile, snpfile, drawastiff = F,
   GWS = 5e-08, FDR = 0.001, MAF = 0.05, chrname = "chr",
   posname = "pos", pvalname = "pvalue", frqname = "maf",
-  conseqname = "conseq")
+  conseqname = "conseq", showgenes = F, showrsids = F,
+  pos.split = 3e+06, pval.split = 0.125, max.pval = 20)
 }
 \arguments{
 \item{infile}{Input GWAS summary statistics}
@@ -35,6 +36,10 @@ manhplot(infile, outfile, configfile, snpfile, drawastiff = F,
 \item{frqname}{column name for allele frequency in GWAS infile}
 
 \item{conseqname}{column name for variant annotation consequence in GWAS infile}
+
+\item{showgenes}{If T shows known genes as bubbles on main manhattan plot, if F show positions of interest as bubbles}
+
+\item{showrsids}{If showgenes is T, then show the rsids, rather than genes}
 }
 \description{
 Generate the manhattan++ plot
