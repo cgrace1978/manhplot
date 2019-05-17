@@ -8,3 +8,5 @@ Maintainer: Dr Christopher Grace <cgrace@well.ox.ac.uk>
 Description: Generates the Manhattan++ plot
 License: What license is it under?
 RoxygenNote: 6.1.1
+Imports:
+  ggplot2
