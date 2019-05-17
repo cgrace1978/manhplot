@@ -9,7 +9,7 @@ Description: Generates the Manhattan++ plot
 License: What license is it under?
 RoxygenNote: 6.1.1
 Imports:
-  reshape2
-  ggplot2
-  ggrepel
+  reshape2,
+  ggplot2,
+  ggrepel,
   gridExtra
