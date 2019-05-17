@@ -44,20 +44,14 @@ manhplot<-function(infile, outfile, configfile, snpfile,
                    showgenes=F,showrsids=F,
                    pos.split=3E6,pval.split=0.125,max.pval=20){
   
-library(reshape2)
-library(ggplot2)
-library(ggrepel)
-library(gridExtra)
-  
-## FLAGS for internal use
-# showgenes<-F ## show labels for known genes, rather than cells of interest
-# showrsids<-F ## show rsids on labels
+require(reshape2)
+require(ggplot2)
+require(ggrepel)
+require(gridExtra)
 
 ## parameters for drawing the manhattan heatmap for internal use.
 pval.units<-5 ## units to display on the y axis
 textsize<-2 ## size of text used on labels
-
-#### THERE IS NO NEED TO READ THE SCRIPT BEYOND THIS POINT
 
 rebuild<-T ## set to false to retain the current matrix
 ## name of log file to generate if debugflag is set.
