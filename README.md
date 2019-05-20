@@ -4,7 +4,7 @@ MANHATTAN++ is software to generate a transposed manhattan heatmap, implemented 
 
 ## Getting Started
 
-you need to install [R](https://www.r-project.org/) The R package can be run on Windows and Linux, you must specify paths to the filenames you are using as input and output.
+You need to install the latest version of [R](https://www.r-project.org/) The R package can be run on Windows and Linux, you must specify paths to the filenames you are using as input and output.
 
 To install the software from the GIT repository:
 ```
@@ -14,7 +14,7 @@ library(devtools)
 install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
 **Note:** If you are using the default GWAS file (cad.add.160614_manhformatv3.txt.gz) it must be unzipped prior to running the R script.
-## Input Files
+
 
 The following command will run the plot with default data in the package:
 ```
@@ -37,6 +37,7 @@ manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = sn
 ## zip the GWAS file
 gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
 ```
+## Input Files
 
 In order to generate the plot, three files are required (with headers in the format described)
 
