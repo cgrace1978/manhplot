@@ -4,24 +4,39 @@ MANHATTAN++ is software to generate a transposed manhattan heatmap, implemented 
 
 ## Getting Started
 
-you need to install [R v3.4.3](https://www.r-project.org/) and the packages **ggplot2**, **reshape2**, **ggrepel** and **gridExtra** and associated dependencies. The R script can be run on Windows and Linux, you must specify paths to the filenames you are using (or use the default filenames)
+You need to install the latest version of [R](https://www.r-project.org/) The R package can be run on Windows and Linux, you must specify paths to the filenames you are using as input and output.
 
-To install the software you need to download this GIT repository, this can be done on the command line using the command:
+To install the software from the GIT repository:
 ```
-git clone https://github.com/cgrace1978/manhplot
-```
-To update the local version of the repository use the following command:
-```
-cd manhplot
-git pull
-```
-Alternatively it is possible to download the repository as a zip using the clone / download on the GIT UI.
+install.packages("devtools")
+library(devtools)
 
-Once the repository is downloaded, install the required packages in R and set the file paths to your input files, and the script should just work with the command:
-```
-Rscript manhattan.heatmap.v1.R
+install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
 **Note:** If you are using the default GWAS file (cad.add.160614_manhformatv3.txt.gz) it must be unzipped prior to running the R script.
+
+
+The following command will run the plot with default data in the package:
+```
+## install R.utils in order to unzip the GWAS file.
+install.packages("R.utils")
+library(R.utils)
+
+library(manhplot)
+
+## unzip the GWAS file
+gunzip(system.file("extdata","cad.add.160614_manhformatv3.txt.gz",package = "manhplot"))
+
+infile<-system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot")
+configfile<-system.file("extdata","config.txt", package = "manhplot")
+snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
+
+## Run manhattan++ with the default paramaters and files included in the package
+manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
+
+## zip the GWAS file
+gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
+```
 ## Input Files
 
 In order to generate the plot, three files are required (with headers in the format described)
@@ -47,6 +62,14 @@ chr pos     pvalue      maf       conseq
 **HINT:** The software displays MAF data when a MAF <5%. If you don't want to use this display function, give all SNPs a MAF > 5%
 
 **HINT:** The software displays annotation data when a consequence is 1. If you don't want to use this display function, give all SNPs a consequence of 0
+
+**HINT:** You can use different column names for the GWAS files by using the command line arguments:
+```
+## Use different GWAS file column names using: chrname, posname, pvalname, frqname and conseqname
+manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile,
+         chrname = "chr", posname = "pos", pvalname = "pvalue", frqname = "maf",
+         conseqname = "conseq",)
+```
 
 ### Loci information (variants)
 
@@ -102,33 +125,3 @@ min.count   max.count   maf     conseq    col         idx     type    report
 ```
 
 Also see the example file (config.txt) for more information.
-
-## Configuration options (within script)
-
-### Flags
-The script has the following flags:
-
-1. **showgenes** - Set to TRUE to show labels for known genes, rather than cells of interest
-2. **showrsids** - Set to TRUE to show rsids rather than genes on labels
-3. **drawastiff** - Set to TRUE to draw the plot as a TIFF file (default is PDF)
-
-### Variables
-The following variables can be customized:
-
-1. **pos.split** - The length of base pair regions for each cell - default 3E6
-2. **pval.split** - The length of log10(pvalue) for each cell - default 0.125
-3. **max.pval** - the max pval to show on the plot - default 20
-4. **pval.units** - The -log10(pval) breaks to display on the y axis
-5. **textsize** - The size of text used on labels
-6. **GWS** - Genome wise significant threshold to use in the plot - default 5E-8
-7. **FDR** - The FDR 5% threshold to use on the plot - default 6.28E-5, Below this p-value cells are ignored and greyed out
-8. **MAF** -  The MAF threshold for use with the config MAF flag.
-
-### File variables
-The following variables point to input / output files (modify to operating system file format)
-
-1. **infile** - File containing the GWAS summary statistics
-2. **outfile** - Prefix of the output file (PNG or TIFF) (default date stamp)
-3. **snpfile** - File containing Loci information to be displayed on the figure.
-4. **configfile** - Configuration file - determines colour scheme and associated variant bins for the cells of the heatmap.
-5. **debugfile** -File with debug / logging, activated using the *debugflag* flag. Writes the contents of each cell in the heatmap
