@@ -84,12 +84,18 @@ p.val.index<-function(p.val){
   return(idx)
 }
 
+### Find the exact cell where the p-value is within on the heatmap
+## p.val - p value
+## pval.chunks - data structure containing cell locations for log10(pvals)
 p.val.cell<-function(p.val,pval.chunks){
   gws<--1*log10(p.val) ## convert the p-value to -log10
   idx<-log10.cell(gws) ## call the log10.index function.
   return(idx)
 }
 
+### Find the exact cell where the -log10(p-value) is within on the heatmap
+## log - log10(pval)
+## pval.chunks - data structure containing cell locations for log10(pvals)
 log10.cell<-function(log, pval.chunks){
   idx<-pvals.cells.index$id[log >= pvals.cells.index$LP & log < pvals.cells.index$UP]
   return (idx)
@@ -110,7 +116,6 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   ## read the gwas results
   cat("Reading the GWAS results...\n")
   d<-read.table(infile, header=T)
-  ##names(d)<-c("chr", "pos","Pvalue", "FRQ","conseq")
   
   ## map columns to those specified by the user.
   names<-names(d)
