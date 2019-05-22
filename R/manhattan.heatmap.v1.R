@@ -1,5 +1,3 @@
-## R version 3.4.2 or higher required
-
 #' Generate the manhattan++ plot
 #' 
 #' @param infile Input GWAS summary statistics
@@ -20,7 +18,7 @@
 #' @examples
 #' library(manhplot)
 #' ## Load R.utils for gzip functionality
-#' install.packages("R.utils")
+#' install.packages("R.utils", repos='https://cloud.r-project.org/')
 #' library(R.utils)
 #'
 #' ## unzip the data included with this package
@@ -145,8 +143,10 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   snp.info<-read.table(snpfile, header=T, sep="\t")
   snp.info<-snp.info[order(snp.info$chr, snp.info$pos, decreasing=F),]
   
+  ## read the config data
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
   
+  ## generate the pvalue bins (using the pval.split parameter)
   pvals<-seq(from=0, to=max.pval, by=pval.split) # max(-log10(d$Pvalue))
   pvals.cells.index<-data.frame(id=1:length(pvals),LP=pvals,UP=c(pvals[2:length(pvals)],max.pval))
   
@@ -175,18 +175,22 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   for(chr in 1:lastchr){
     cat("chromosome",chr,"out of", lastchr,"\r")
     
+    ## extract chromosome specific data from GWAS input
     chr.slice<-d[d$chr==chr,]
     
+    ## Generate the chromosome position bins (using the pos.split parameter)
     chunks<-seq(from=min(chr.slice$pos), to=max(chr.slice$pos), by=pos.split)
     chunks[length(chunks)+1]<-max(chr.slice$pos)
     
-    
+    ## create the matrix for this chromosome (pvals * position)
     mdat<-matrix(0, nrow = length(pvals), ncol = length(chunks)-1)
     
     for (i in 1:(length(chunks)-1)){
+      ## get slice of gwas input for each of the position bins
       slice<-chr.slice[chr.slice$pos >= chunks[i] & chr.slice$pos < chunks[i+1],]
       
       for (j in 1:length(pvals)){
+        ## get slice of gwas input for each of the pvalue bins (and position bins)
         if(j == length(pvals)){ ## last element in pval array - include all variants gt then this
           p.val.slice<-slice[-log10(slice$Pvalue) >= pvals[j],]  
         }
@@ -194,10 +198,13 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
           p.val.slice<-slice[-log10(slice$Pvalue) >= pvals[j] & -log10(slice$Pvalue) < pvals[j+1],]
         }      
         
+        ## determine the number of variants in the slice
         len<-dim(p.val.slice)[1]
         idx<-0
         
+        ## determine the number of variants in the slice, which have the HIGH consequence flag set to 1
         conseq.len<-dim(p.val.slice[p.val.slice$conseq==1,])[1] ## test if any high consequences
+        ## determine the number of variants in the slice, which have MAF less than 5%
         maf.len<-dim(p.val.slice[p.val.slice$FRQ<=MAF,])[1] ## test if any MAF < 5%
         
         if(len == 0){idx<-0} ## the case with no variants - blank cell.
@@ -208,6 +215,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
           
           ## this defines the region which should be greyed out
           if(pvals[j] <= -log10(FDR)){
+            ## determine whether the chromosome is odd and even
             if((chr %% 2) != 0){idx<-config$idx[config$type=="oddchr"]}
             else{idx<-config$idx[config$type=="evenchr"]}
           }
@@ -335,7 +343,8 @@ col.discrete<-c("white",config$col)
 
 col.text<-vector(mode="character",length=length(config$type))
 
-for(k in 1:length(col.text)){ ## Build the text for the legend using the information in the config table
+## Build the text for the legend using the information in the config table
+for(k in 1:length(col.text)){ 
   if(config$type[k]=="val"){
     
     max.count<-config$max.count[k]
@@ -402,6 +411,7 @@ if(showgenes==FALSE){ ## if show genes flag is not set then put all the genes in
 snp.info.known<-snp.info[snp.info$novel==FALSE,]
 snp.info.novel<-snp.info[snp.info$novel==TRUE,]
 
+## the core heatmap - generated using ggplot2
 main.core<-ggplot(data=m, aes(x=pos,y=pval)) + 
   geom_tile(aes(fill = val))+ ##,colour= val), size=0.01) + 
   theme(legend.position="left",legend.key.size=unit(0.5,"line"),
@@ -423,7 +433,8 @@ main.core<-ggplot(data=m, aes(x=pos,y=pval)) +
   theme(axis.ticks.y = element_blank()) +
   theme(axis.line.x = element_line(color="black", size = 0.5))
   
-if(dim(snp.info.known)[1] > 0){ ## if there is one or more known SNPs in the table then label the manhattan plot with them.
+## if there is one or more known SNPs in the table then label the manhattan plot with them.
+if(dim(snp.info.known)[1] > 0){ 
   repel.df<-as.data.frame(matrix(nrow=dim(snp.info.known)[1],ncol=3))
   names(repel.df)<-c("marker","pvalidx","posidx")
   
@@ -445,7 +456,8 @@ if(dim(snp.info.known)[1] > 0){ ## if there is one or more known SNPs in the tab
           point.padding = NA)
 }
 
-if(dim(pos.interest)[1]> 0){ ## if any positions of interest label on the manhattan plot then label them
+## if any positions of interest label on the manhattan plot then label them
+if(dim(pos.interest)[1]> 0){ 
   main.core<-main.core+ geom_label_repel(data=pos.interest, aes(pos.idx,pvalidx, label=marker),
         size=textsize, force=5, nudge_y = 10,nudge_x=10,
         segment.colour="black", min.segment.length = 0,
@@ -459,6 +471,7 @@ table.pos<-function(index){
   return(log10.index(idx))
 }
 
+## the positions of the columns of the table (currently hard coded, with 0-20 coordinates)
 title.pos<-c(table.pos(17)+1, table.pos(13)+1, table.pos(11.5)+1,table.pos(10)+1,table.pos(7)+1)
 
 ## Generate table for the novel genes
@@ -549,27 +562,30 @@ final.table.plot<-table2 +
            y = title.pos[5], label = "Gene",
            angle=0,size=textsize, hjust=0,fontface = 'bold') 
 
+## modify the clipping of the table, so it can be merged with the heatmap.
 gt <- ggplot_gtable(ggplot_build(final.table.plot)) # p4
 gt$layout$clip[gt$layout$name == "panel"] <- "off"
 
-## hard code variables for positions of two plots on qplot
-manh.max<-7
-annot.min<-6.7
-
-## always draw as a PDF.
-
+## draw either as TIFF (drawastiff == T), or by default as PDF.
 if(drawastiff==T){
   tiff(filename = paste(outfile,".tif",sep=""),width = 8.27,height = 11.69, units="in",res=300)
 } else{
   pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
 
+## by default plot the heatmap with regions of interest bubbles (showgenes == FALSE)
 final.plot<-main.core
- 
-if(showgenes==TRUE){ ## if show genes flag is set then assign to the final plot.
+
+## if show genes flag is T then add repel gene labels from the SNP list to the heatmap plot
+if(showgenes==TRUE){ 
   final.plot<-final.repel.plot
 }
 
+## hard code variables for positions of two plots on qplot
+manh.max<-7
+annot.min<-6.7
+
+## merge the heatmap and the table plots together
 print(qplot(1:10,1:10,colour=I("white")) +
   annotation_custom(grob=ggplotGrob(final.plot), xmin=0.5,xmax=manh.max, ymin=1,ymax = 10) +
   annotation_custom(grob=gt, xmin=annot.min, xmax=10.5, ymin=1,ymax = 10) +
@@ -586,12 +602,3 @@ print(qplot(1:10,1:10,colour=I("white")) +
 
 dev.off()
 }
-
-         
-# drawastiff = F, GWS = 5E-8, FDR=1E-3) 
-
-#chrname = "chromosome", posname = "bp",
-#pvalname = "pval",frqname = "minorallelefreq", conseqname = "consequence")
-
-
-
