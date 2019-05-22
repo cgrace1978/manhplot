@@ -23,7 +23,6 @@ Maintainer: \packageMaintainer{manhplot}
 }
 \keyword{ package }
 \seealso{
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
 }
