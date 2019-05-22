@@ -47,7 +47,7 @@ Generate the manhattan++ plot
 \examples{
 library(manhplot)
 ## Load R.utils for gzip functionality
-install.packages("R.utils")
+install.packages("R.utils", repos='https://cloud.r-project.org/')
 library(R.utils)
 
 ## unzip the data included with this package
@@ -62,4 +62,7 @@ manhplot(infile = infile,outfile = "default-plot", configfile = configfile, snpf
 ## zip the data
 gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
 
+}
+\author{
+Dr Christopher Grace
 }
