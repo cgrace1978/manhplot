@@ -1,12 +1,13 @@
 Package: manhplot
 Type: Package
 Title: Generates the Manhattan++ plot
+Depends: R (>= 3.4.3)
 Version: 1.0
 Date: 2019-05-14
 Author: Dr Christopher Grace <cgrace@well.ox.ac.uk>
 Maintainer: Dr Christopher Grace <cgrace@well.ox.ac.uk>
-Description: Generates the Manhattan++ plot
-License: What license is it under?
+Description: See title
+License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Imports:
   reshape2,

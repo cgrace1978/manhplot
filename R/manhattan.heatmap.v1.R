@@ -35,6 +35,7 @@
 #' ## zip the data
 #' gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
 #' 
+#' @author Dr Christopher Grace
 #' @export
 manhplot<-function(infile, outfile, configfile, snpfile, 
                    drawastiff=F,
