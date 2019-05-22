@@ -43,10 +43,10 @@ manhplot<-function(infile, outfile, configfile, snpfile,
                    showgenes=F,showrsids=F,
                    pos.split=3E6,pval.split=0.125,max.pval=20){
   
-require(reshape2)
-require(ggplot2)
-require(ggrepel)
-require(gridExtra)
+requireNamespace("reshape2")
+requireNamespace("ggplot2")
+requireNamespace("ggrepel")
+requireNamespace("gridExtra")
 
 ## parameters for drawing the manhattan heatmap for internal use.
 pval.units<-5 ## units to display on the y axis
