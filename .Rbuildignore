@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+archive
+exampledata
+default-plot.pdf
+memory
+thinning.R
