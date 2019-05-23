@@ -1,12 +1,12 @@
 Package: manhplot
 Type: Package
-Title: Generates the Manhattan++ plot
-Depends: R (>= 3.4.3)
+Title: Generates the Manhattan++ Plot
+Depends: R (>= 3.4.0)
 Version: 1.0
 Date: 2019-05-14
 Author: Dr Christopher Grace <cgrace@well.ox.ac.uk>
 Maintainer: Dr Christopher Grace <cgrace@well.ox.ac.uk>
-Description: This package generates the Manhattan++ plot. The plot allows integration of annotation data. 
+Description: Generates the Manhattan++ plot. The plot allows integration of annotation data. 
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Imports:
