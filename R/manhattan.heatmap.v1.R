@@ -15,39 +15,40 @@
 #' @param conseqname column name for variant annotation consequence in GWAS infile
 #' @param showgenes If T shows known genes as bubbles on main manhattan plot, if F show positions of interest as bubbles
 #' @param showrsids If showgenes is T, then show the rsids, rather than genes
+#' @param pos.split The bin lengths for positions
+#' @param pval.split The bin lengths for pvalues
+#' @param max.pval The maximum pvalue to display
 #' @examples
 #' library(manhplot)
 #' ## Load R.utils for gzip functionality
-#' install.packages("R.utils", repos='https://cloud.r-project.org/')
 #' library(R.utils)
 #'
 #' ## unzip the data included with this package
-#' gunzip(system.file("extdata","cad.add.160614_manhformatv3.txt.gz",package = "manhplot"))
+#' gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
 #'
-#' infile<-system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot")
+#' infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
 #' configfile<-system.file("extdata","config.txt", package = "manhplot")
 #' snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 #'
-#' manhplot(infile = infile,outfile = "default-plot", configfile = configfile, snpfile = snpfile)
+#' manhplusplot(infile = infile,outfile = "default-plot", configfile = configfile, snpfile = snpfile)
 #'
 #' ## zip the data
-#' gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
+#' gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 #' 
 #' @author Dr Christopher Grace
+#' @import utils ggplot2 reshape2 ggrepel gridExtra grDevices
 #' @export
-manhplot<-function(infile, outfile, configfile, snpfile, 
+manhplusplot<-function(infile, outfile, configfile, snpfile, 
                    drawastiff=F,
                    GWS=5E-8, FDR=1E-3, MAF=0.05,
                    chrname="chr",posname="pos",pvalname="pvalue",
                    frqname="maf",conseqname="conseq",
                    showgenes=F,showrsids=F,
                    pos.split=3E6,pval.split=0.125,max.pval=20){
-  
-requireNamespace("reshape2")
-requireNamespace("ggplot2")
-requireNamespace("ggrepel")
-requireNamespace("gridExtra")
 
+## the no visible binding for global variable issue with check.
+pvalidx<-pos<-pval<-val<-posidx<-marker<-NULL
+  
 ## parameters for drawing the manhattan heatmap for internal use.
 pval.units<-5 ## units to display on the y axis
 textsize<-2 ## size of text used on labels

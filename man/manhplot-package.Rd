@@ -19,10 +19,4 @@ The DESCRIPTION file:
 
 Maintainer: \packageMaintainer{manhplot}
 }
-\references{
-}
 \keyword{ package }
-\seealso{
-}
-\examples{
-}
