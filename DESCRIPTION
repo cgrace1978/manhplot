@@ -16,4 +16,5 @@ Imports:
   gridExtra
 Suggests:
   R.utils
+URL: https://github.com/cgrace1978/manhplot/
 BugReports: https://github.com/cgrace1978/manhplot/issues

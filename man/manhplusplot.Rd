@@ -50,6 +50,9 @@ manhplusplot(infile, outfile, configfile, snpfile, drawastiff = F,
 \description{
 Generate the manhattan++ plot
 }
+\details{
+For file formats see github page \url{https://github.com/cgrace1978/manhplot}
+}
 \examples{
 
 ## Download example data from 

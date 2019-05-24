@@ -18,6 +18,8 @@
 #' @param pos.split The bin lengths for positions
 #' @param pval.split The bin lengths for pvalues
 #' @param max.pval The maximum pvalue to display
+#' @details 
+#' For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 #' @examples
 #'
 #' ## Download example data from 
