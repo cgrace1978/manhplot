@@ -6,7 +6,7 @@ Version: 1.0
 Date: 2019-05-14
 Author: Chris Grace <cgrace@well.ox.ac.uk>
 Maintainer: Chris Grace <cgrace@well.ox.ac.uk>
-Description: This package generates the manhattan++ plot. This plot integrates functional annotation into a manhattan plot.The plot is implemented as a heatmap, which is binned using -log10(p-value) and chromosome position. Annotation currently implemented is minor allele frequency (MAF) and VEP HIGH consequence variants.
+Description: This plot integrates functional annotation into a manhattan plot.The plot is implemented as a heatmap, which is binned using -log10(p-value) and chromosome position. Annotation currently implemented is minor allele frequency and Variant Effect Predictor HIGH consequence variants.
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Imports:

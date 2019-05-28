@@ -55,18 +55,21 @@ For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 }
 \examples{
 
-## Download example data from 
-## https://github.com/cgrace1978/manhplot/
-## GWAS files
-## exampledata/cad.add.160614_manhformatv2_005_edit.txt.gz
-## inst/extdata/cad.add.160614_manhformat.txt.gz
-## Config file
-## inst/extdata/config.txt
-## SNP file
-## inst/extdata/56cad.add.160614.variants.txt
+library(manhplot)
+## Load R.utils for gzip functionality
+library(R.utils)
 
-## manhplusplot(infile = "cad.add.160614_manhformat.txt",outfile = "default-plot", 
-##              configfile = "config.txt", snpfile = "56cad.add.160614.variants.txt")
+## unzip the data included with this package
+gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
+
+infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
+configfile<-system.file("extdata","config.txt", package = "manhplot")
+snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
+
+manhplusplot(infile = infile,outfile = "default-plot", configfile = configfile, snpfile = snpfile)
+
+## zip the data
+gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 
 }
 \author{
