@@ -112,9 +112,9 @@ chrpos.cell<-function(chr, position, chr.chunks){
 }
 
 if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the flag is set
-  cat("Rebuilding matrix\n")
+  message("Rebuilding matrix")
   ## read the gwas results
-  cat("Reading the GWAS results...\n")
+  message("Reading the GWAS results...")
   d<-read.table(infile, header=T)
   
   ## map columns to those specified by the user.
@@ -174,7 +174,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   pos.interest<-data.frame(marker=character,log10pval=numeric,chr=numeric,pos=numeric,col=character)
   
   for(chr in 1:lastchr){
-    cat("chromosome",chr,"out of", lastchr,"\r")
+    message(paste("Processing chromosome ",chr,"\r", sep=""),appendLF = F)
     
     ## extract chromosome specific data from GWAS input
     chr.slice<-d[d$chr==chr,]
@@ -321,7 +321,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
     snpcells[i]<-chrpos.cell(snp.info$chr[i],snp.info$pos[i],pos.chunks)
   }
   
-  cat("\nMelting matrix...\n")
+  message("\nMelting matrix...")
   m<-melt(final)
   names(m)<-c("pval","pos", "val")
 
@@ -382,7 +382,7 @@ for(k in 1:length(col.text)){
     col.text.tmp<-paste(col.text.tmp," (MAF < ",MAF,")",sep="")
   }
   else{ ## all possible scenarios are covered - should not get here
-    cat("Should not get here!\n")  
+    warning("Should not get here!\n")  
     stopifnot(FALSE)
   }
     col.text[k]<-paste(col.text.tmp," (",idx.count[k],")",sep="")
@@ -601,5 +601,5 @@ print(qplot(1:10,1:10,colour=I("white")) +
   theme(plot.background = element_rect(fill = 'white', colour = 'white')) +
   theme(panel.background = element_rect(fill = 'white', colour = 'white')))
 
-dev.off()
+dev.out<-dev.off()
 }
