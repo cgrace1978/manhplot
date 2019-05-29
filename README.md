@@ -25,9 +25,9 @@ library(R.utils)
 library(manhplot)
 
 ## unzip the GWAS file
-gunzip(system.file("extdata","cad.add.160614_manhformatv3.txt.gz",package = "manhplot"))
+gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
 
-infile<-system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot")
+infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
 configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
@@ -35,7 +35,7 @@ snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhp
 manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
 
 ## zip the GWAS file
-gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
+gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 ```
 ## Input Files
 
