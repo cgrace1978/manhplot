@@ -6,7 +6,7 @@ Version: 1.0
 Date: 2019-05-14
 Author: Chris Grace <cgrace@well.ox.ac.uk>
 Maintainer: Chris Grace <cgrace@well.ox.ac.uk>
-Description: This plot integrates functional annotation into a manhattan plot.The plot is implemented as a heatmap, which is binned using -log10(p-value) and chromosome position. Annotation currently implemented is minor allele frequency and Variant Effect Predictor HIGH consequence variants.
+Description: This plot integrates annotation into a manhattan plot.The plot is implemented as a heatmap, which is binned using -log10(p-value) and chromosome position. Annotation currently supported is minor allele frequency and gene function high impact variants.
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Imports:
@@ -15,6 +15,7 @@ Imports:
   ggrepel,
   gridExtra
 Suggests:
-  R.utils
+    R.utils,
+    testthat
 URL: https://github.com/cgrace1978/manhplot/
 BugReports: https://github.com/cgrace1978/manhplot/issues

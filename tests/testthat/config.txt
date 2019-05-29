@@ -1,0 +1,21 @@
+#### CONFIG file for use with MANH++ - Do not modify the first 10 lines							
+## min.count: The lower cell count threshold to accept this config							
+## max.count: The upper cell count threshold to accept this config							
+## maf: Is MAF detection active for this config - is there any variants within a cell with MAF < threshold?							
+## conseq: Is HIGH impact consequence active? Are there any variants with HIGH impact consequence in the cell?							
+## col: The colour which cells for this config							
+## idx: the index to use for this cell in the heatmap - MUST BE CONSECUTIVE FROM START TO END - STARTING AT 1							
+"## type: val - an config entry, oddchr - the odd chromosome, evenchr - the even chromosome"							
+## report: Are these annotations labeled on the heatmap							
+#####							
+min.count	max.count	maf	conseq	col	idx	type	report
+1	2	FALSE	FALSE	black	1	val	FALSE
+1	2	FALSE	TRUE	light pink	2	val	TRUE
+1	2	TRUE	FALSE	green	3	val	FALSE
+1	2	TRUE	TRUE	dark magenta	4	val	TRUE
+2	NA	FALSE	FALSE	blue	5	val	FALSE
+2	NA	FALSE	TRUE	pink	6	val	TRUE
+2	NA	TRUE	FALSE	red	7	val	FALSE
+2	NA	TRUE	TRUE	cyan	8	val	TRUE
+NA	NA	NA	NA	dark grey	9	oddchr	NA
+NA	NA	NA	NA	grey	10	evenchr	NA

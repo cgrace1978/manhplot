@@ -22,6 +22,7 @@
 #' For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 #' @examples
 #'
+#'\donttest{
 #' library(manhplot)
 #' ## Load R.utils for gzip functionality
 #' library(R.utils)
@@ -37,6 +38,7 @@
 #'
 #' ## zip the data
 #' gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
+#' }
 #' 
 #' @author Chris Grace
 #' @import utils ggplot2 reshape2 ggrepel gridExtra grDevices
@@ -140,7 +142,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   
   ## check that the chromosome column is in correct format.
   waitifnot(is.numeric(d$chr), "chr column in gwas data should be numeric, please check if encoded X, or with `chr` prefix")
-  ## Support for the Z chromosome?
+  ## Support for the X chromosome?
   lastchr<-max(unique(d$chr))
   
   ## read the snp info

@@ -55,6 +55,7 @@ For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 }
 \examples{
 
+\donttest{
 library(manhplot)
 ## Load R.utils for gzip functionality
 library(R.utils)
@@ -70,6 +71,7 @@ manhplusplot(infile = infile,outfile = "default-plot", configfile = configfile, 
 
 ## zip the data
 gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
+}
 
 }
 \author{
