@@ -59,7 +59,7 @@ chr pos     pvalue      maf       conseq
 1   752721  0.8462652   0.740969  0
 1   752894  0.7750657   0.744287  0
 ```
-**HINT:** The software displays MAF data when a MAF <5%. If you don't want to use this display function, give all SNPs a MAF > 5%
+**HINT:** The software's default is to displays MAF data when a MAF <5%. If you don't want to use this display function set the MAF function argument to 0.
 
 **HINT:** The software displays annotation data when a consequence is 1. If you don't want to use this display function, give all SNPs a consequence of 0
 
