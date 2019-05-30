@@ -32,7 +32,7 @@ configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
 ## Run manhattan++ with the default paramaters and files included in the package
-manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
+manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
 
 ## zip the GWAS file
 gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
