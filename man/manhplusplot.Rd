@@ -67,7 +67,8 @@ infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplo
 configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
-manhplusplot(infile = infile,outfile = "default-plot", configfile = configfile, snpfile = snpfile)
+manhplusplot(infile = infile,outfile = file.path(tempdir(), "default-plot"), 
+               configfile = configfile, snpfile = snpfile)
 
 ## zip the data
 gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
