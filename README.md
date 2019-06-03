@@ -13,7 +13,7 @@ library(devtools)
 
 install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
-**Note:** If you are using the default GWAS file (cad.add.160614_manhformatv3.txt.gz) it must be unzipped prior to running the R script.
+**Note:** If you are using the default GWAS file (cad.add.160614_manhformat.txt.gz) it must be unzipped prior to running the R script.
 
 
 The following command will run the plot with default data in the package:
@@ -25,17 +25,17 @@ library(R.utils)
 library(manhplot)
 
 ## unzip the GWAS file
-gunzip(system.file("extdata","cad.add.160614_manhformatv3.txt.gz",package = "manhplot"))
+gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
 
-infile<-system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot")
+infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
 configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
 ## Run manhattan++ with the default paramaters and files included in the package
-manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
+manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
 
 ## zip the GWAS file
-gzip(system.file("extdata","cad.add.160614_manhformatv3.txt",package = "manhplot"))
+gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 ```
 ## Input Files
 
@@ -59,7 +59,7 @@ chr pos     pvalue      maf       conseq
 1   752721  0.8462652   0.740969  0
 1   752894  0.7750657   0.744287  0
 ```
-**HINT:** The software displays MAF data when a MAF <5%. If you don't want to use this display function, give all SNPs a MAF > 5%
+**HINT:** The software's default is to displays MAF data when a MAF <5%. If you don't want to use this display function set the MAF function argument to 0.
 
 **HINT:** The software displays annotation data when a consequence is 1. If you don't want to use this display function, give all SNPs a consequence of 0
 
