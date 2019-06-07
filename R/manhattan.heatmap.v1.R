@@ -238,7 +238,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
                     if(is.na(config$max.count[k])){ ## if the config max is NA then accept length condition
                       len.chk<-TRUE
                     }
-                    else if(len < config$max.count[k]){ ## if the current cell length is lt the config max count then accept the length condition
+                    else if(len <= config$max.count[k]){ ## if the current cell length is lt the config max count then accept the length condition
                       len.chk<-TRUE
                     }
                   }
@@ -358,9 +358,6 @@ for(k in 1:length(col.text)){
     
     if(is.na(max.count)){ ## if the max count is assigned to NA then the highest cell count (with approp ceiling) is used
       max.count<-peak.val
-    }
-    else{
-      max.count<-(max.count-1)
     }
     
     if(config$min.count[k]==1 &&max.count==1){

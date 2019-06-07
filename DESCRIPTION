@@ -2,7 +2,7 @@ Package: manhplot
 Type: Package
 Title: The Manhattan++ Plot
 Depends: R (>= 3.4.0)
-Version: 1.0
+Version: 1.1
 Date: 2019-05-14
 Author: Chris Grace <cgrace@well.ox.ac.uk>
 Maintainer: Chris Grace <cgrace@well.ox.ac.uk>
