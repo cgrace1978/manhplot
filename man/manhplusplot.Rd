@@ -57,21 +57,12 @@ For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 
 \donttest{
 library(manhplot)
-## Load R.utils for gzip functionality
-library(R.utils)
-
-## unzip the data included with this package
-gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
-
-infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
+infile<-system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot")
 configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
 manhplusplot(infile = infile,outfile = file.path(tempdir(), "default-plot"), 
                configfile = configfile, snpfile = snpfile)
-
-## zip the data
-gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 }
 
 }
