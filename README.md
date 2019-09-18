@@ -18,24 +18,14 @@ install_github("cgrace1978/manhplot", dependencies = T, force = T)
 
 The following command will run the plot with default data in the package:
 ```
-## install R.utils in order to unzip the GWAS file.
-install.packages("R.utils")
-library(R.utils)
-
 library(manhplot)
 
-## unzip the GWAS file
-gunzip(system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot"))
-
-infile<-system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot")
+infile<-system.file("extdata","cad.add.160614_manhformat.txt.gz",package = "manhplot")
 configfile<-system.file("extdata","config.txt", package = "manhplot")
 snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhplot")
 
 ## Run manhattan++ with the default paramaters and files included in the package
 manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
-
-## zip the GWAS file
-gzip(system.file("extdata","cad.add.160614_manhformat.txt",package = "manhplot"))
 ```
 ## Input Files
 
