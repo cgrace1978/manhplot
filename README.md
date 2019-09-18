@@ -13,8 +13,6 @@ library(devtools)
 
 install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
-**Note:** If you are using the default GWAS file (cad.add.160614_manhformat.txt.gz) it must be unzipped prior to running the R script.
-
 
 The following command will run the plot with default data in the package:
 ```
