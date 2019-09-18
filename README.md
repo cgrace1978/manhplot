@@ -40,6 +40,8 @@ The summary statistics, this file should have the following columns:
 5. **conseq** - Flag of whether variant has HIGH functional consequence (using VEP)
 
 The variable *infile* should be modfied to point to this file (with the file structure of the operating system used). The files should be numerically sorted (chr:pos).
+
+**Note:** The software supports uncompressed GWAS files and those which are compressed using gzip
 ```
 chr pos     pvalue      maf       conseq
 1   751756  0.4528019   0.158264  0
