@@ -50,7 +50,10 @@ chr pos     pvalue      maf       conseq
 1   752894  0.7750657   0.744287  0
 ```
 **HINT:** The software's default is to displays MAF data when a MAF <5%. If you don't want to use this display function set the MAF function argument to 0.
-
+```
+## Use the MAF argument to specify the threshold to report MAF variants, set to zero to not report at all
+manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile, MAF=0)
+```
 **HINT:** The software displays annotation data when a consequence is 1. If you don't want to use this display function, give all SNPs a consequence of 0
 
 **HINT:** You can use different column names for the GWAS files by using the command line arguments:
