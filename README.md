@@ -31,7 +31,7 @@ In order to generate the plot, three files are required (with headers in the for
 
 ### Genome Wide Association Study (GWAS) or Meta-analysis summary statistics
 
-The summary statistics, this file should have the following columns:
+The summary statistics (can be uncompressed or compressed (gzip only)), this file should have the following columns:
 
 1. **chr** - chromosome (must be numeric)
 2. **pos** - position
@@ -69,7 +69,7 @@ manhplot(infile = infile,outfile = "test", configfile = configfile, snpfile = sn
 Variants of interest to annotate the plot with. 
 
 1. **markername** - The name of the variant
-2. **NearestGene** - The gene name associated with the variant
+2. **gene** - The gene name associated with the variant
 3. **chr** - chromosome
 4. **pos** - position
 5. **eaf** - effect allele frequency
@@ -80,7 +80,7 @@ Variants of interest to annotate the plot with.
 The variable *snpfile* should be modfied to point to this file (with the file structure of the operating system used). The novel flag indicates whether the loci is a new finding in the GWAS being reported. When the *showGenes* flag is set to TRUE, Novel loci will be displayed in the table and the others on the heatmap, as bubble labels. When *showGenes* is false, all loci are displayed in the table.
 
 ```
-markername  NearestGene chr     pos         eaf       OR      Pvalue    novel
+markername  gene chr     pos         eaf       OR      Pvalue    novel
 rs11206510  PCSK9       1       55496039    0.847627  1.08    2.34E-08  FALSE
 rs9970807   PPAP2B      1       56965664    0.915097  1.13    5E-14     FALSE
 rs7528419   SORT1       1       109817192   0.78582   1.12    1.97E-23  FALSE
