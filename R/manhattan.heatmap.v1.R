@@ -433,7 +433,7 @@ if(dim(snp.info.known)[1] > 0){
   repel.df<-as.data.frame(matrix(nrow=dim(snp.info.known)[1],ncol=3))
   names(repel.df)<-c("marker","pvalidx","posidx")
   
-  repel.df$marker<-snp.info.known$NearestGene
+  repel.df$marker<-snp.info.known$gene
   if(showrsids==T){
     repel.df$marker<-snp.info.known$markername
   }
@@ -520,7 +520,7 @@ table2<-table1+
            y = title.pos[4], label = as.character(formatC(snp.info.novel$Pvalue, format = "E", digits = 2)),
            angle=0,size=textsize, hjust=0) + ## P-value
   annotate("text", x = text.pos1,
-           y = title.pos[5], label =as.character(snp.info.novel$NearestGene),
+           y = title.pos[5], label =as.character(snp.info.novel$gene),
            angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
   annotate("segment", x = text.pos1,
            xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
