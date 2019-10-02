@@ -17,7 +17,6 @@ The summary statistics file must have at least the following columns (with heade
 [Required] Column name having variant p-values (not log10 transformed)
 [Required] Column name having variant beta values (not Odds Ratios)
 [Required] Column name having variant effect allele frequency
-[Required] The input gene database file name
 
 The script defines a locus if 2 variants are at least 500 kbp apart or defined using --locusbounds and have p<5e-8 or defined using --gwaspcut.
 
