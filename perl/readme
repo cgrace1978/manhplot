@@ -18,6 +18,9 @@ The summary statistics file must have at least the following columns (with heade
 [Required] Column name having variant beta values (not Odds Ratios)
 [Required] Column name having variant effect allele frequency
 
+For help, run:
+perl gen_snpfile.pl --help
+
 The script defines a locus if 2 variants are at least 500 kbp apart or defined using --locusbounds and have p<5e-8 or defined using --gwaspcut.
 
 The script annotates the lead variant with gene names based on proximity to nearest gene. 
