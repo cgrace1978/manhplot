@@ -1,0 +1,43 @@
+Date: 2/10/2019
+Author: Anuj Goel
+Script: gen_snpfile.pl
+
+This Perl script has been tested in Linux OS (Centos 7) using Perl version v5.16.3.
+The aim of this script is to read a GWAS summary statistics file and generate a list of lead variants and annotate them with nearest gene names.
+To be used as "snpfile" for Manhattan++
+
+The script uses a gene database that can be downloaded from PLINK website:
+https://www.cog-genomics.org/plink/1.9/resources#genelist
+
+The summary statistics file can be plain text file or gzipped (tab delimited).
+The summary statistics file must have at least the following columns (with headers)
+[Required] Column name containing chromosome numbers (numeric)
+[Required] Column name containing variant names
+[Required] Column name having variant positions (basepairs)
+[Required] Column name having variant p-values (not log10 transformed)
+[Required] Column name having variant beta values (not Odds Ratios)
+[Required] Column name having variant effect allele frequency
+[Required] The input gene database file name
+
+The script defines a locus if 2 variants are at least 500 kbp apart or defined using --locusbounds and have p<5e-8 or defined using --gwaspcut.
+
+The script annotates the lead variant with gene names based on proximity to nearest gene. 
+ - If gene is beyond 500kbp (or defined using --snpgenebounds)  apart either side, the variant is in a gene-desert.
+ - If variant is within a gene start-end, the variant gets that gene annotation
+ - If the variant is between 2 genes, the 2 nearest genes are reported for that variant
+ - If the variant is between 2 genes and one gene is further than --snpgenebounds, only the nearest 3' or 5' gene is reported
+
+
+*****************
+IMPORTANT
+****************
+
+The user still need to update the output file to identify the loci that are novel.
+
+****************
+
+For bugs, please report via GitHub Issues page.
+-Thank you.
+
+
+
