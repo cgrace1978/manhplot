@@ -131,6 +131,8 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   d<-d[!is.na(d$pos),]
   ## align the frequencies to the minor allele
   d$FRQ[d$FRQ > 0.5]<-(1-(d$FRQ[d$FRQ>0.5]))
+  ## remove any pvalues that equal zero.
+  d<-d[d$Pvalue>0,]
   
   ## check that the chromosome column is in correct format.
   waitifnot(is.numeric(d$chr), "chr column in gwas data should be numeric, please check if encoded X, or with `chr` prefix")
