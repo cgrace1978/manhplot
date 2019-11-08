@@ -26,6 +26,3 @@ snpfile<-system.file("extdata","56cad.add.160614.variants.txt", package = "manhp
 manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile = snpfile)
 ```
 For more information on using manhattan++ please visit the [Manhattan++ wiki](https://github.com/cgrace1978/manhplot/wiki/home)
-
-## test branch
-
