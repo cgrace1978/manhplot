@@ -27,4 +27,5 @@ manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile 
 ```
 For more information on using manhattan++ please visit the [Manhattan++ wiki](https://github.com/cgrace1978/manhplot/wiki/home)
 
+## test branch
 
