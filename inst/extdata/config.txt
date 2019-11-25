@@ -10,12 +10,12 @@
 #####							
 min.count	max.count	maf	conseq	col	idx	type	report
 1	1	FALSE	FALSE	black	1	val	FALSE
-1	1	FALSE	TRUE	light pink	2	val	TRUE
+1	1	FALSE	TRUE	lightpink	2	val	TRUE
 1	1	TRUE	FALSE	green	3	val	FALSE
-1	1	TRUE	TRUE	dark magenta	4	val	TRUE
+1	1	TRUE	TRUE	darkmagenta	4	val	TRUE
 2	NA	FALSE	FALSE	blue	5	val	FALSE
 2	NA	FALSE	TRUE	pink	6	val	TRUE
 2	NA	TRUE	FALSE	red	7	val	FALSE
 2	NA	TRUE	TRUE	cyan	8	val	TRUE
-NA	NA	NA	NA	dark grey	9	oddchr	NA
+NA	NA	NA	NA	darkgrey	9	oddchr	NA
 NA	NA	NA	NA	grey	10	evenchr	NA
