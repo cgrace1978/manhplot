@@ -563,8 +563,14 @@ gt$layout$clip[gt$layout$name == "panel"] <- "off"
 
 ## draw either as TIFF (drawastiff == T), or by default as PDF.
 if(drawastiff==T){
+  message(paste("\nGenerated tiff file: ", 
+                outfile,".tif\nWidth = 8.27in Height = 11.69in\nDefault working directory: ", 
+                getwd(), sep=""))
   tiff(filename = paste(outfile,".tif",sep=""),width = 8.27,height = 11.69, units="in",res=300)
 } else{
+  message(paste("\nGenerated pdf file: ", 
+                outfile,".pdf\nWidth = 8.27in Height = 11.69in\nDefault working directory: ", 
+                getwd(), sep=""))
   pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
 
