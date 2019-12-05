@@ -41,7 +41,8 @@ manhplusplot<-function(infile, outfile, configfile, snpfile,
                    chrname="chr",posname="pos",pvalname="pvalue",
                    frqname="maf",conseqname="conseq",
                    showgenes=F,showrsids=F,
-                   pos.split=3E6,pval.split=0.125,max.pval=20){
+                   pos.split=3E6,pval.split=0.125,max.pval=20,
+                   unasigned.col="orange"){
 
 ## the no visible binding for global variable issue with check.
 pvalidx<-pos<-pval<-val<-posidx<-marker<-NULL
@@ -145,7 +146,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   
   ## read the config data
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
-  
+
   ## generate the pvalue bins (using the pval.split parameter)
   pvals<-seq(from=0, to=max.pval, by=pval.split) # max(-log10(d$Pvalue))
   pvals.cells.index<-data.frame(id=1:length(pvals),LP=pvals,UP=c(pvals[2:length(pvals)],max.pval))
@@ -392,7 +393,7 @@ col.brks<-1:length(config$type)
 
 if(max(m$val) > max(config$idx)){ ## if there are any cells which do not have a category add them to the remaining category.
   col.brks<-c(col.brks,max(m$val))
-  col.discrete<-c(col.discrete,"orange") ## hard coded colour for remaining.
+  col.discrete<-c(col.discrete,unasigned.col)
   col.text<-c(col.text,paste("Remaining (", idx.count[max(m$val)],")",sep=""))
 }
 
@@ -565,8 +566,14 @@ gt$layout$clip[gt$layout$name == "panel"] <- "off"
 
 ## draw either as TIFF (drawastiff == T), or by default as PDF.
 if(drawastiff==T){
+  message(paste("\nGenerated tiff file: ", 
+                outfile,".tif\nWidth = 8.27in Height = 11.69in\nDefault working directory: ", 
+                getwd(), sep=""))
   tiff(filename = paste(outfile,".tif",sep=""),width = 8.27,height = 11.69, units="in",res=300)
 } else{
+  message(paste("\nGenerated pdf file: ", 
+                outfile,".pdf\nWidth = 8.27in Height = 11.69in\nDefault working directory: ", 
+                getwd(), sep=""))
   pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
 
