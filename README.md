@@ -14,7 +14,7 @@ library(devtools)
 install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
 
-The following command will run the plot with default data in the package:
+The following command will run the plot with default data in the package. The pdf (test.pdf) will be created in the current working directory in R (This can be viewed using the getwd() command):
 ```
 library(manhplot)
 
