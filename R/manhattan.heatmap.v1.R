@@ -154,9 +154,16 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   ## if no chromosome specified: insert chromosome configuration to the end of the config file
   if(length(config$type[config$type=="oddchr"]) == 0 &&
      length(config$type[config$type=="evenchr"]) == 0){
-    config[length(config$idx)+1,] <- c(NA, NA, NA,NA,oddchr.col,length(config$idx)+1,"oddchr",NA)
-    config[length(config$idx)+1,] <- c(NA, NA, NA,NA,evenchr.col,length(config$idx)+1,"evenchr",NA)
-    config$idx<-as.numeric(config$idx)
+    chr.df<-data.frame(min.count=c(NA,NA),
+                       max.count=c(NA,NA),
+                       maf=c(NA,NA),
+                       conseq=c(NA,NA),
+                       col=c(oddchr.col,evenchr.col),
+                       idx=c(length(config$idx)+1,
+                             length(config$idx)+2),
+                       type=c("oddchr","evenchr"),
+                       report=c(NA,NA))
+    config<-rbind(config, chr.df)
   }
   
   ## generate the pvalue bins (using the pval.split parameter)
