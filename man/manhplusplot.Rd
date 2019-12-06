@@ -8,7 +8,9 @@ manhplusplot(infile, outfile, configfile, snpfile, drawastiff = F,
   GWS = 5e-08, FDR = 0.001, MAF = 0.05, chrname = "chr",
   posname = "pos", pvalname = "pvalue", frqname = "maf",
   conseqname = "conseq", showgenes = F, showrsids = F,
-  pos.split = 3e+06, pval.split = 0.125, max.pval = 20)
+  pos.split = 3e+06, pval.split = 0.125, max.pval = 20,
+  unasigned.col = "orange", oddchr.col = "darkgrey",
+  evenchr.col = "grey")
 }
 \arguments{
 \item{infile}{Input GWAS summary statistics}
@@ -46,6 +48,12 @@ manhplusplot(infile, outfile, configfile, snpfile, drawastiff = F,
 \item{pval.split}{The bin lengths for pvalues}
 
 \item{max.pval}{The maximum pvalue to display}
+
+\item{unasigned.col}{Colour for unasigned cells}
+
+\item{oddchr.col}{Colour for below the FDR threshold on the odd chromosome}
+
+\item{evenchr.col}{Colour for below the FDR threshold on the even chromosome}
 }
 \description{
 Generate the manhattan++ plot

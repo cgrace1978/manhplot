@@ -18,6 +18,9 @@
 #' @param pos.split The bin lengths for positions
 #' @param pval.split The bin lengths for pvalues
 #' @param max.pval The maximum pvalue to display
+#' @param unasigned.col Colour for unasigned cells
+#' @param oddchr.col Colour for below the FDR threshold on the odd chromosome
+#' @param evenchr.col Colour for below the FDR threshold on the even chromosome
 #' @details 
 #' For file formats see github page \url{https://github.com/cgrace1978/manhplot}
 #' @examples
@@ -42,7 +45,8 @@ manhplusplot<-function(infile, outfile, configfile, snpfile,
                    frqname="maf",conseqname="conseq",
                    showgenes=F,showrsids=F,
                    pos.split=3E6,pval.split=0.125,max.pval=20,
-                   unasigned.col="orange"){
+                   unasigned.col="orange", 
+                   oddchr.col="darkgrey",evenchr.col="grey"){
 
 ## the no visible binding for global variable issue with check.
 pvalidx<-pos<-pval<-val<-posidx<-marker<-NULL
@@ -146,7 +150,15 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   
   ## read the config data
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
-
+  
+  ## if no chromosome specified: insert chromosome configuration to the end of the config file
+  if(length(config$type[config$type=="oddchr"]) == 0 &&
+     length(config$type[config$type=="evenchr"]) == 0){
+    config[length(config$idx)+1,] <- c(NA, NA, NA,NA,oddchr.col,length(config$idx)+1,"oddchr",NA)
+    config[length(config$idx)+1,] <- c(NA, NA, NA,NA,evenchr.col,length(config$idx)+1,"evenchr",NA)
+    config$idx<-as.numeric(config$idx)
+  }
+  
   ## generate the pvalue bins (using the pval.split parameter)
   pvals<-seq(from=0, to=max.pval, by=pval.split) # max(-log10(d$Pvalue))
   pvals.cells.index<-data.frame(id=1:length(pvals),LP=pvals,UP=c(pvals[2:length(pvals)],max.pval))
