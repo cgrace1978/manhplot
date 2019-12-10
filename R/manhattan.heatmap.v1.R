@@ -138,18 +138,39 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   d$FRQ[d$FRQ > 0.5]<-(1-(d$FRQ[d$FRQ>0.5]))
   ## remove any pvalues that equal zero.
   d<-d[d$Pvalue>0,]
-  
+
+  ## check that compulsory GWAS columns are present.
+  if(length(names(d)[grep("\\bchr\\b|\\bpos\\b|\\bPvalue\\b|\\bFRQ\\b|\\bconseq\\b",names(d),invert = F)]) < 5){
+    stop(paste("GWAS input table, missing compulsory column(s): ",
+               chrname,", ",posname,", ", pvalname, ", ",
+               frqname,", ", conseqname, sep=""))
+  }
+    
   ## check that the chromosome column is in correct format.
   waitifnot(is.numeric(d$chr), "chr column in gwas data should be numeric, please check if encoded X, or with `chr` prefix")
   ## Support for the X chromosome?
   lastchr<-max(unique(d$chr))
   
   ## read the snp info
-  snp.info<-read.table(snpfile, header=T, sep="\t")
+  snp.info<-read.table(snpfile, header=T, sep="\t",colClasses = "character") # read all columns as characters.
+  
+  ## check that compulsory SNP table columns are present.
+  if(length(names(snp.info)[grep("\\bchr\\b|\\bpos\\b|\\bnovel\\b|\\bmarkername\\b|\\bgene\\b",names(snp.info),invert = F)]) < 5){
+    stop("SNP information table, missing compulsory column(s): markername, gene, chr, pos, novel")
+  }
+  
+  snp.info$chr<-as.numeric(snp.info$chr) 
+  snp.info$pos<-as.numeric(snp.info$pos)
+  snp.info$novel<-as.logical(snp.info$novel)
   snp.info<-snp.info[order(snp.info$chr, snp.info$pos, decreasing=F),]
   
   ## read the config data
   config<-read.table(configfile,sep="\t", header =T,stringsAsFactors = F, skip=10)
+  
+  ## check that compulsory configuration table columns are present.
+  if(length(names(config)[grep("\\bmin.count\\b|\\bmax.count\\b|\\bmaf\\b|\\bconseq\\b|\\bcol\\b|\\bidx\\b|\\btype\\b|\\breport\\b",names(config),invert = F)]) < 8){
+    stop("configuration table, missing compulsory column(s): min.count, max.count, maf, conseq, col, idx, type, report")
+  }
   
   ## if no chromosome specified: insert chromosome configuration to the end of the config file
   if(length(config$type[config$type=="oddchr"]) == 0 &&
@@ -488,9 +509,6 @@ table.pos<-function(index){
   return(log10.index(idx))
 }
 
-## the positions of the columns of the table (currently hard coded, with 0-20 coordinates)
-title.pos<-c(table.pos(17)+1, table.pos(13)+1, table.pos(11.5)+1,table.pos(10)+1,table.pos(7)+1)
-
 ## Generate table for the novel genes
 ## Start with a completely blank plot (table1)
 table1<-ggplot(data=m, aes(x=pos,y=pval)) + 
@@ -522,6 +540,32 @@ segment.indexes<-c(table.pos(17.5)+1,table.pos(19)+1,table.pos(20)+1)
 chr.num.pos<-(table.pos(19.75)+1)
 brks.pos<-(table.pos(19.7)+1)
 
+dynamic.col.list<-names(snp.info.novel)[grep("chr|pos|novel|markername|gene",names(snp.info.novel),invert = T)]
+max.dynamic.list<-length(dynamic.col.list)
+if(max.dynamic.list > 3){max.dynamic.list<-3} ## maximum of three user defined columns
+
+## the positions of the columns of the table (dynamically generated)
+scale<-2.75
+start.pos<-17 
+dyn.start.pos<-13
+
+title.pos<-c(start.pos,dyn.start.pos)
+prevlen<-dyn.start.pos
+
+if(length(dynamic.col.list)>0){
+  for(i in 1:max.dynamic.list){
+    templen<-max(nchar(c(dynamic.col.list[i],snp.info.novel[,dynamic.col.list[i]])))
+  
+    title.pos<-c(title.pos,prevlen - (templen/scale))
+    prevlen<-prevlen-(templen/scale)
+  }
+}
+
+title.pos<-table.pos(title.pos)+1
+
+## old hard-coded postions
+# title.pos<-c(table.pos(start.pos)+1, table.pos(13)+1, table.pos(11.5)+1,table.pos(10)+1,table.pos(7)+1)
+
 text.pos<-seq(from=xmin, to=xmax,length.out=length(snp.info.novel$markername)+1)
 text.pos1<-text.pos[2:length(text.pos)]
 title.pos1<-text.pos[1]
@@ -532,17 +576,8 @@ table2<-table1+
   annotate("text", x = text.pos1,
            y = title.pos[1], label = as.character(snp.info.novel$markername),
            angle=0,size=textsize, hjust=0) + ## markername
-  annotate("text", x = text.pos1, 
-           y = title.pos[2], label = as.character(format(round(snp.info.novel$eaf,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0) + ## EAF
-  annotate("text", x = text.pos1, 
-           y = title.pos[3], label = as.character(format(round(snp.info.novel$OR,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0) + ## OR
-  annotate("text", x = text.pos1, 
-           y = title.pos[4], label = as.character(formatC(snp.info.novel$Pvalue, format = "E", digits = 2)),
-           angle=0,size=textsize, hjust=0) + ## P-value
   annotate("text", x = text.pos1,
-           y = title.pos[5], label =as.character(snp.info.novel$gene),
+           y = title.pos[max.dynamic.list+2], label =as.character(snp.info.novel$gene),
            angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
   annotate("segment", x = text.pos1,
            xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
@@ -558,7 +593,15 @@ table2<-table1+
            colour = "black", linetype="solid") + ## x axis breaks
   annotate("segment", x = 0,  
            xend = xmax, y = segment.indexes[3], yend = segment.indexes[3],
-           colour = "black", linetype="solid")  ## xaxis solid line
+           colour = "black", linetype="solid") 
+
+  if(max.dynamic.list > 0){
+    for (j in 1:max.dynamic.list){
+      table2<-table2 + annotate("text", x = text.pos1,
+           y = title.pos[j+1], label = as.character(snp.info.novel[,dynamic.col.list[j]]),
+           angle=0,size=textsize, hjust=0)
+    }
+  }
 
 ## add the title to the table.
 ## Can add additional table headers here.
@@ -566,18 +609,18 @@ final.table.plot<-table2 +
   annotate("text", x = title.pos1,
            y = title.pos[1], label = "SNP",
            angle=0,size=textsize, hjust=0,fontface = 'bold') +
+
   annotate("text", x = title.pos1,
-           y = title.pos[2], label = "EAF",
-           angle=0,size=textsize, hjust=0,fontface = 'bold') +
-  annotate("text", x = title.pos1,
-           y = title.pos[3], label = "OR",
-           angle=0,size=textsize, hjust=0,fontface = 'bold') +
-  annotate("text", x = title.pos1,
-           y = title.pos[4], label = "p-value",
-           angle=0,size=textsize, hjust=0,fontface = 'bold') +
-  annotate("text", x = title.pos1,
-           y = title.pos[5], label = "Gene",
+           y = title.pos[max.dynamic.list+2], label = "Gene",
            angle=0,size=textsize, hjust=0,fontface = 'bold') 
+
+  if(max.dynamic.list>0){
+    for (j in 1:max.dynamic.list){
+      final.table.plot<-final.table.plot+annotate("text", x = title.pos1,
+              y = title.pos[j+1], label = dynamic.col.list[j], ## column 5 name
+              angle=0,size=textsize, hjust=0,fontface = 'bold')
+      }
+  }
 
 ## modify the clipping of the table, so it can be merged with the heatmap.
 gt <- ggplot_gtable(ggplot_build(final.table.plot)) # p4
