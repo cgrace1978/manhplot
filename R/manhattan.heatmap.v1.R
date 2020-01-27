@@ -504,39 +504,44 @@ text.pos<-seq(from=xmin, to=xmax,length.out=length(snp.info.novel$markername)+1)
 text.pos1<-text.pos[2:length(text.pos)]
 title.pos1<-text.pos[1]
 
-## add the SNP information to the table
-## Can add additional columns to the table here.
-table2<-table1+
-  annotate("text", x = text.pos1,
-           y = title.pos[1], label = as.character(snp.info.novel$markername),
-           angle=0,size=textsize, hjust=0) + ## markername
-  annotate("text", x = text.pos1, 
-           y = title.pos[2], label = as.character(format(round(snp.info.novel$eaf,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0) + ## EAF
-  annotate("text", x = text.pos1, 
-           y = title.pos[3], label = as.character(format(round(snp.info.novel$OR,2),nsmall=2)),
-           angle=0,size=textsize, hjust=0) + ## OR
-  annotate("text", x = text.pos1, 
-           y = title.pos[4], label = as.character(formatC(snp.info.novel$Pvalue, format = "E", digits = 2)),
-           angle=0,size=textsize, hjust=0) + ## P-value
-  annotate("text", x = text.pos1,
-           y = title.pos[5], label =as.character(snp.info.novel$gene),
-           angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
-  annotate("segment", x = text.pos1,
-           xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
-           colour = "blue", linetype="dashed", size=0.5) +  ## segment from midpoint to table row
-  annotate("segment", x = snpcells[snp.info$novel==TRUE], 
-           xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[2], yend = segment.indexes[3],
-           colour = "blue", linetype="dashed", size=0.5) + ## segment from axis to mid point
-  annotate("text", x = chr.matrix.len$mid,
-           y = chr.num.pos, label = as.character(1:lastchr), 
-           angle=0,size=3.5, hjust=0)+ ## chromosome labels
-  annotate("segment", x = chr.matrix.len$cumm, 
-           xend = chr.matrix.len$cumm, y = brks.pos, yend = segment.indexes[3], 
-           colour = "black", linetype="solid") + ## x axis breaks
-  annotate("segment", x = 0,  
-           xend = xmax, y = segment.indexes[3], yend = segment.indexes[3],
-           colour = "black", linetype="solid")  ## xaxis solid line
+if(dim(snp.info.novel)[1] > 0){
+  ## add the SNP information to the table
+  ## Can add additional columns to the table here.
+  table2<-table1+
+    annotate("text", x = text.pos1,
+             y = title.pos[1], label = as.character(snp.info.novel$markername),
+             angle=0,size=textsize, hjust=0) + ## markername
+    annotate("text", x = text.pos1, 
+             y = title.pos[2], label = as.character(format(round(snp.info.novel$eaf,2),nsmall=2)),
+             angle=0,size=textsize, hjust=0) + ## EAF
+    annotate("text", x = text.pos1, 
+             y = title.pos[3], label = as.character(format(round(snp.info.novel$OR,2),nsmall=2)),
+             angle=0,size=textsize, hjust=0) + ## OR
+    annotate("text", x = text.pos1, 
+             y = title.pos[4], label = as.character(formatC(snp.info.novel$Pvalue, format = "E", digits = 2)),
+             angle=0,size=textsize, hjust=0) + ## P-value
+    annotate("text", x = text.pos1,
+             y = title.pos[5], label =as.character(snp.info.novel$gene),
+             angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
+    annotate("segment", x = text.pos1,
+             xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
+             colour = "blue", linetype="dashed", size=0.5) +  ## segment from midpoint to table row
+    annotate("segment", x = snpcells[snp.info$novel==TRUE], 
+             xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[2], yend = segment.indexes[3],
+             colour = "blue", linetype="dashed", size=0.5) + ## segment from axis to mid point
+    annotate("text", x = chr.matrix.len$mid,
+             y = chr.num.pos, label = as.character(1:lastchr), 
+             angle=0,size=3.5, hjust=0)+ ## chromosome labels
+    annotate("segment", x = chr.matrix.len$cumm, 
+             xend = chr.matrix.len$cumm, y = brks.pos, yend = segment.indexes[3], 
+             colour = "black", linetype="solid") + ## x axis breaks
+    annotate("segment", x = 0,  
+             xend = xmax, y = segment.indexes[3], yend = segment.indexes[3],
+             colour = "black", linetype="solid")  ## xaxis solid line
+}
+else{
+  table2<-table1
+}
 
 ## add the title to the table.
 ## Can add additional table headers here.
@@ -578,7 +583,7 @@ if(drawastiff==T){
 final.plot<-main.core
 
 ## if show genes flag is T then add repel gene labels from the SNP list to the heatmap plot
-if(showgenes==TRUE){ 
+if(showgenes==TRUE && dim(snp.info.known)[1] > 0){ 
   final.plot<-final.repel.plot
 }
 
