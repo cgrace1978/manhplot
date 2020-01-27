@@ -14,7 +14,7 @@ library(devtools)
 install_github("cgrace1978/manhplot", dependencies = T, force = T)
 ```
 
-The following command will run the plot with default data in the package:
+The following command will run the plot with default data in the package. The pdf (test.pdf) will be created in the current working directory in R (This can be viewed using the getwd() command):
 ```
 library(manhplot)
 
@@ -27,4 +27,13 @@ manhplusplot(infile = infile,outfile = "test", configfile = configfile, snpfile 
 ```
 For more information on using manhattan++ please visit the [Manhattan++ wiki](https://github.com/cgrace1978/manhplot/wiki/home)
 
+### Citation
+To use Manhattan++ please cite the following paper:
 
+Grace *et al*
+
+Manhattan++: displaying genome-wide association summary statistics with multiple annotation layers
+
+BMC Bioinformatics 2019; 20(1):610
+
+PubMed: [31775616](https://www.ncbi.nlm.nih.gov/pubmed/31775616)
