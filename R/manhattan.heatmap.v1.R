@@ -441,7 +441,9 @@ if(dim(snp.info.known)[1] > 0){
   repel.df$pvalidx<-p.val.index(snp.info.known$Pvalue) 
   repel.df$posidx<-snpcells[snp.info$novel==FALSE] 
   
-  repel.df[repel.df$pvalidx > log10.index(max.pval),]$pvalidx<-log10.index(max.pval)
+  if(dim(repel.df[repel.df$pvalidx > log10.index(max.pval),])[1] > 0){
+    repel.df[repel.df$pvalidx > log10.index(max.pval),]$pvalidx<-log10.index(max.pval)
+  }
   
   final.repel.plot<-main.core+
     geom_label_repel(data=repel.df, aes(posidx,pvalidx, label=marker),
