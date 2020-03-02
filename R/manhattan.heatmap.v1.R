@@ -37,7 +37,7 @@
 #' @export
 manhplusplot<-function(infile, outfile, configfile, snpfile, 
                    drawastiff=F,
-                   GWS=5E-8, FDR=1E-3, MAF=0.05,
+                   GWS=5E-8, FDR=1E-3, MAF=0.05,chrthresh=1E-3,
                    chrname="chr",posname="pos",pvalname="pvalue",
                    frqname="maf",conseqname="conseq",
                    showgenes=F,showrsids=F,
@@ -48,7 +48,9 @@ pvalidx<-pos<-pval<-val<-posidx<-marker<-NULL
   
 ## parameters for drawing the manhattan heatmap for internal use.
 pval.units<-5 ## units to display on the y axis
-textsize<-2 ## size of text used on labels
+textsize<-2.5 ## size of text used on labels
+legendtextsize<-7 ## size of text in the legend
+segmentlen<-0.25
 
 rebuild<-T ## set to false to retain the current matrix
 ## name of log file to generate if debugflag is set.
@@ -212,7 +214,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
           ## maf.len - does it include any MAF < 5%
           
           ## this defines the region which should be greyed out
-          if(pvals[j] <= -log10(FDR)){
+          if(pvals[j] <= -log10(chrthresh)){
             ## determine whether the chromosome is odd and even
             if((chr %% 2) != 0){idx<-config$idx[config$type=="oddchr"]}
             else{idx<-config$idx[config$type=="evenchr"]}
@@ -245,13 +247,45 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
                   if(len.chk==TRUE && conseq.chk==TRUE && maf.chk==TRUE){ ## if all three clauses are correct then accept the idx for the config and exit the for loop
                     idx<-config$idx[k]
                     
-                    if(config$report[k]==TRUE){ ## if reporting is active for the config then add an entry to the pos.interest table.
-                      tmp.df<-data.frame(
-                        marker=paste(idx,sep=""),
-                        log10pval=pvals[j],chr=chr,pos=(chunks[i]+1),
-                        col=config$col[k])
+                    if(config$report[k]==TRUE && 
+                       pvals[j] >= -log10(FDR)){ ## if reporting is active for the config then add an entry to the pos.interest table.
                       
-                      pos.interest<-rbind(pos.interest,tmp.df)
+                      ## pvals[j] <= -log10(chrthresh)
+                      
+                      repval<-idx
+                      show<-F
+                      
+                      if(conseq.len > 0){
+                        ## Levels: HIGH missense NONE
+
+                        type<-as.character(p.val.slice$type[p.val.slice$conseq==1])
+
+                        ##print(type)
+
+                        if("HIGH" %in% type){
+                          tophigh <- p.val.slice$id[as.character(p.val.slice$type) == "HIGH"][1]
+                          repval<-paste("HIGH:",tophigh)
+                          show<-T
+                          print(repval)
+                        }
+                        else if("missense" %in% type){
+                          topmiss <- p.val.slice$id[as.character(p.val.slice$type) == "missense"][1]
+                          repval<-paste("Missense:",topmiss)
+                          show<-T
+                          print(repval)
+                        }
+                      
+                        
+                      }
+                      
+                      if(show == T){
+                        tmp.df<-data.frame(
+                          marker=paste(repval,sep=""),
+                          log10pval=pvals[j],chr=chr,pos=(chunks[i]+1),
+                          col=config$col[k])
+                        
+                        pos.interest<-rbind(pos.interest,tmp.df)
+                      }
                     }
                     break ## found config which fulfils cell criteria accept and exit group.
                   }
@@ -410,8 +444,8 @@ snp.info.novel<-snp.info[snp.info$novel==TRUE,]
 main.core<-ggplot(data=m, aes(x=pos,y=pval)) + 
   geom_tile(aes(fill = val))+ ##,colour= val), size=0.01) + 
   theme(legend.position="left",legend.key.size=unit(0.5,"line"),
-        legend.title=element_text(size=5),
-        legend.text=element_text(size=5)) +
+        legend.title=element_text(size=legendtextsize),
+        legend.text=element_text(size=legendtextsize)) +
   geom_hline(yintercept=p.val.cell(GWS)+0.5, linetype="dashed") + ## GWS line
   geom_hline(yintercept=p.val.cell(FDR)+0.5, linetype="dashed") + ## FDR line
   scale_fill_gradientn(colours = col.discrete, 
@@ -455,11 +489,30 @@ if(dim(snp.info.known)[1] > 0){
 
 ## if any positions of interest label on the manhattan plot then label them
 if(dim(pos.interest)[1]> 0){ 
-  main.core<-main.core+ geom_label_repel(data=pos.interest, aes(pos.idx,pvalidx, label=marker),
-        size=textsize, force=5, nudge_y = 10,nudge_x=10,
-        segment.colour="black", min.segment.length = 0,
-        segment.size=0.25, seed=500, max.iter = 5000,
-        point.padding = NA,segment.color = "black",color="black")
+  
+  pos.interest2<-data.frame(marker=character,log10pval=numeric,chr=numeric,pos=numeric,col=character)
+  
+  unique.tmp<-unique(pos.interest$pos)
+  
+  for (i in 1:length(unique.tmp)){
+    slice<-pos.interest[pos.interest$pos == unique.tmp[i],]
+    
+    slct.line<-slice[slice$log10pval==max(slice$log10pval),]
+    
+    for (j in 1:dim(slice)[1]){
+      if(grepl("HIGH",slice$marker[j])){
+        slct.line<-slice[j,]
+        break
+      }
+    }
+    pos.interest2<-rbind(pos.interest2,slct.line)
+  }
+  
+  main.core<-main.core+ geom_label_repel(data=pos.interest2, aes(pos.idx,pvalidx, label=marker),
+        size=textsize, force=10, min.segment.length = 0, ##nudge_y = 25,nudge_x=25, direction = "both", ## change the nudge on the labels
+        segment.colour="black",## min.segment.length = 10,
+        segment.size=0.25, ## seed=500, max.iter = 5000,
+        segment.color = "black",color="black") ## point.padding = NA,
 }
 
 ## convert coordinates 0-20 to coordinates for whole table.
@@ -509,6 +562,10 @@ title.pos1<-text.pos[1]
 if(dim(snp.info.novel)[1] > 0){
   ## add the SNP information to the table
   ## Can add additional columns to the table here.
+  
+  snp.info.novel$colour<-"blue"
+  snp.info.novel$colour[((snp.info.novel$chr %% 2) != 0)]<-"black"
+  
   table2<-table1+
     annotate("text", x = text.pos1,
              y = title.pos[1], label = as.character(snp.info.novel$markername),
@@ -527,10 +584,10 @@ if(dim(snp.info.novel)[1] > 0){
              angle=0,size=textsize, hjust=0,fontface = 'italic') + ## Nearest Gene
     annotate("segment", x = text.pos1,
              xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[1], yend = segment.indexes[2],
-             colour = "blue", linetype="dashed", size=0.5) +  ## segment from midpoint to table row
+             colour = snp.info.novel$colour, linetype="dashed", size=segmentlen) +  ## segment from midpoint to table row
     annotate("segment", x = snpcells[snp.info$novel==TRUE], 
              xend = snpcells[snp.info$novel==TRUE], y = segment.indexes[2], yend = segment.indexes[3],
-             colour = "blue", linetype="dashed", size=0.5) + ## segment from axis to mid point
+             colour = snp.info.novel$colour, linetype="dashed", size=segmentlen) + ## segment from axis to mid point
     annotate("text", x = chr.matrix.len$mid,
              y = chr.num.pos, label = as.character(1:lastchr), 
              angle=0,size=3.5, hjust=0)+ ## chromosome labels
@@ -578,7 +635,7 @@ if(drawastiff==T){
   message(paste("\nGenerated pdf file: ", 
                 outfile,".pdf\nWidth = 8.27in Height = 11.69in\nDefault working directory: ", 
                 getwd(), sep=""))
-  pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
+  cairo_pdf(paste(outfile,".pdf",sep=""),width = 8.27,height = 11.69,onefile = F)
 }
 
 ## by default plot the heatmap with regions of interest bubbles (showgenes == FALSE)
