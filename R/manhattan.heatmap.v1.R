@@ -126,6 +126,15 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
     if(col == conseqname){names[i] <- "conseq"}
   }
   
+  ## check data file has the correct headers
+  correct.names<-c("chr","pos","Pvalue","FRQ","conseq")
+  for(i in (1:length(correct.names))){
+    if(!correct.names[i]%in%names(d)){
+      message(paste0(correct.names[i], " not found in data file!\n"))
+      return()
+    }
+  }
+  
   names(d)<-names
   
   d<-d[!is.na(d$pos),]
@@ -139,6 +148,16 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   
   ## read the snp info
   snp.info<-read.table(snpfile, header=T, sep="\t")
+  
+  ## check snp file has the correct headers
+  correct.names<-c("markername","gene","chr","pos","eaf","OR","Pvalue","novel")
+  for(i in (1:length(correct.names))){
+    if(!correct.names[i]%in%names(snp.info)){
+      message(paste0(correct.names[i], " not found in SNP file!\n"))
+      return()
+    }
+  }
+  
   snp.info<-snp.info[order(snp.info$chr, snp.info$pos, decreasing=F),]
   
   ## read the config data
