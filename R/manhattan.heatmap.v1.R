@@ -126,6 +126,8 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
     if(col == conseqname){names[i] <- "conseq"}
   }
   
+  names(d)<-names
+  
   ## check data file has the correct headers
   correct.names<-c("chr","pos","Pvalue","FRQ","conseq")
   for(i in (1:length(correct.names))){
@@ -134,8 +136,6 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
       return()
     }
   }
-  
-  names(d)<-names
   
   d<-d[!is.na(d$pos),]
   ## align the frequencies to the minor allele
