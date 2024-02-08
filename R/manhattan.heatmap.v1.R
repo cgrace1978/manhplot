@@ -189,7 +189,7 @@ if(rebuild==T){## rebuild the heatmap matrix and other datastructures if the fla
   }
   
   ## locations to be labelled on the plot.
-  pos.interest<-data.frame(marker=character,log10pval=numeric,chr=numeric,pos=numeric,col=character)
+  pos.interest<-data.frame(marker=character(),log10pval=numeric(),chr=numeric(),pos=numeric(),col=character())
   
   for(chr in 1:lastchr){
     message(paste("Processing chromosome ",chr,"\r", sep=""),appendLF = F)
