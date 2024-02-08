@@ -429,7 +429,7 @@ snp.info.novel<-snp.info[snp.info$novel==TRUE,]
 
 ## the core heatmap - generated using ggplot2
 main.core<-ggplot(data=m, aes(x=pos,y=pval)) + 
-  geom_tile(aes(fill = val))+ ##,colour= val), size=0.01) + 
+  geom_tile(aes(fill = val))+ 
   theme(legend.position="left",legend.key.size=unit(0.5,"line"),
         legend.title=element_text(size=5),
         legend.text=element_text(size=5)) +
@@ -480,7 +480,7 @@ if(dim(pos.interest)[1]> 0){
         size=textsize, force=5, nudge_y = 10,nudge_x=10,
         segment.colour="black", min.segment.length = 0,
         segment.size=0.25, seed=500, max.iter = 5000,
-        point.padding = NA,segment.color = "black",color="black")
+        point.padding = NA,color="black")
 }
 
 ## convert coordinates 0-20 to coordinates for whole table.
