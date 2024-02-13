@@ -43,7 +43,7 @@ manhplusplot<-function(infile, outfile, configfile, snpfile,
                    showgenes=F,showrsids=F,
                    pos.split=3E6,pval.split=0.125,max.pval=20){
 
-## axis break mod
+## axis break mod - laptop
   
 ## the no visible binding for global variable issue with check.
 pvalidx<-pos<-pval<-val<-posidx<-marker<-NULL
